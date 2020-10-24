@@ -46,10 +46,10 @@ class CharacterTest extends TestCase {
 			$heroe = new Character();
 			$enemy = new Character();
 			//Accion - When
-			$enemy->Attack();
+			$heroe->currentHealth = $enemy->Attack(100);
 			// Assert - Then
 			$result = $heroe->GetHealth();
-			$this->assertEquals(true, $result);
+			$this->assertEquals(900, $result);
 		}
 }
 
