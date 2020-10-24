@@ -51,6 +51,18 @@ class CharacterTest extends TestCase {
 			$result = $heroe->GetHealth();
 			$this->assertEquals(900, $result);
 		}
+
+	public function test_character_died(
+		) {
+			// Escenario - Given
+			$heroe = new Character();
+			$enemy = new Character();
+			//Accion - When
+			$heroe->currentHealth = $enemy->Attack(1000);
+			// Assert - Then
+			$result = $heroe->IsAlive();
+			$this->assertEquals(false, $result);
+		}
 }
 
 

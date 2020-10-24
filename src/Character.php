@@ -32,6 +32,11 @@ class Character {
     }
 
     public function IsAlive() : bool {
+        if($this->currentHealth <= 0) {
+            $this->alive = false;
+            return $this->alive;
+        }
+
         return $this->alive;
     }
 
