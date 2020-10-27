@@ -113,11 +113,10 @@ class CharacterTest extends TestCase {
 	{
 		// Given
 		$ryu = new Character();
-		$ryufHealth = $ryu->GetHealth();
 		// Action
-		$ryufHealth = $ryu->Attack(100, $ryu);
+		$ryu->Attack(100, $ryu);
 		// Assert
-		$result =  $ryufHealth;
+		$result =  $ryu->GetHealth();
 		$this->assertEquals(1000, $result);
 	}
 
