@@ -31,10 +31,6 @@ class Character {
         return $this->health;
     }
 
-    public function CheckIsAlive() {
-        return $this->alive;
-    }
-
     public function Attack(int $damagePoint, $character) {
         if($this !== $character) {
             $character->health -= $damagePoint;
@@ -47,7 +43,7 @@ class Character {
         }
 
         if($character->health + $healPoint >= 1000) {
-            $character->health == 1000;
+            $character->health = 1000;
             return;
         }
 

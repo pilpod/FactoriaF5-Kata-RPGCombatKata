@@ -86,25 +86,27 @@ class CharacterTest extends TestCase {
 		$frodo = new Character();
 		// Action - When
 		$gandalf->Attack(1100, $frodo);
-		$gandalf->ToHeal(100, $frodo);
 		// Asserts
 		$result1 = $frodo->IsAlive();
 		$result2 = $gandalf->ToHeal(100, $frodo);
 		$this->assertEquals(false, $result1);
-		$this->assertEquals(0, $result2);
+		$this->assertEquals(null, $result2);
 	}
 
-	public function test_not_raise_heath_above_1000()
+	public function test_not_raise_health_above_1000()
 	{
 		// Given
 		$gandalf = new Character();
 		$frodo = new Character();
-		$frodoHealth = $frodo->GetHealth();
+		$ogre = new Character();
 		// Action - When
-		$frodoHealth = $gandalf->ToHeal(100, $frodoHealth);
+		$ogre->Attack(200, $frodo);
+		$gandalf->ToHeal(300, $frodo);
 		// Assert
-		$result = $frodoHealth;
+		$result = $frodo->GetHealth(); 
 		$this->assertEquals(1000, $result);
+
+		
 	}
 
 	public function test_cannot_deal_damage_itself()
