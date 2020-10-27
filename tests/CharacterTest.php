@@ -45,11 +45,10 @@ class CharacterTest extends TestCase {
 		// Escenario - Given
 		$heroe = new Character();
 		$enemy = new Character();
-		$heroeHealth = $heroe->GetHealth();
 		//Accion - When
-		$heroeHealth = $enemy->Attack(100, $heroe);
+		$enemy->Attack(100, $heroe);
 		// Assert - Then
-		$result = $heroeHealth;
+		$result = $heroe->GetHealth();
 		$this->assertEquals(900, $result);
 	}
 
@@ -58,11 +57,10 @@ class CharacterTest extends TestCase {
 		// Given
 		$heroe = new Character();
 		$enemy = new Character();
-		$heroeHealth = $heroe->GetHealth();
 		// When
-		$heroeHealth = $enemy->Attack(1000, $heroe);
+		$enemy->Attack(1000, $heroe);
 		// Asserts
-		$result = $heroe->IsAlive($heroeHealth);
+		$result = $heroe->IsAlive();
 		$this->assertEquals(false, $result);
 
 	}
@@ -72,13 +70,13 @@ class CharacterTest extends TestCase {
 		// Given
 		$gandalf = new Character();
 		$frodo = new Character();
-		$frodoHealth = $frodo->GetHealth();
-		$frodoHealth = 900;
+		$orco = new Character();
 		// Action
-		$frodoHealth = $gandalf->ToHeal(100,$frodoHealth);
+		$orco->Attack(200, $frodo);
+		$gandalf->ToHeal(100, $frodo);
 		// Asserts
-		$result = $frodoHealth;
-		$this->assertEquals(1000, $result);
+		$result = $frodo->GetHealth();
+		$this->assertEquals(900, $result);
 	}
 
 	public function test_dead_pj_cannot_healed()
@@ -86,13 +84,14 @@ class CharacterTest extends TestCase {
 		// Given
 		$gandalf = new Character();
 		$frodo = new Character();
-		$frodoHealth = $frodo->GetHealth();
-		$frodoHealth = 0;
 		// Action - When
-		$frodoHealth = $gandalf->ToHeal(100, $frodoHealth);
+		$gandalf->Attack(1100, $frodo);
+		$gandalf->ToHeal(100, $frodo);
 		// Asserts
-		$result = $frodoHealth;
-		$this->assertEquals(0, $result);
+		$result1 = $frodo->IsAlive();
+		$result2 = $gandalf->ToHeal(100, $frodo);
+		$this->assertEquals(false, $result1);
+		$this->assertEquals(0, $result2);
 	}
 
 	public function test_not_raise_heath_above_1000()
@@ -119,6 +118,13 @@ class CharacterTest extends TestCase {
 		$result =  $ryufHealth;
 		$this->assertEquals(1000, $result);
 	}
+
+	// public function test_can_only_heal_itself() 
+	// {
+	// 	// Given - Stage
+	// 	// $gandalf = new Character();
+	// 	// $gandalfHealth = $gandalf->GetHealth();
+	// }
 
 	
 }

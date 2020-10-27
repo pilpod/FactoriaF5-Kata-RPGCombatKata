@@ -23,35 +23,36 @@ class Character {
         return $this->level;
     }
 
-    public function IsAlive(int $health) : bool {
-        if($health <= 0) {
+    public function IsAlive() : bool {
+        if($this->health <= 0) {
             $this->alive = false;
-            return $this->alive;
+            return $this->alive;  
         }
+        return $this->health;
+    }
 
+    public function CheckIsAlive() {
         return $this->alive;
     }
 
     public function Attack(int $damagePoint, $character) {
         if($this !== $character) {
-            $this->health -= $damagePoint;
-            return $this->health;
+            $character->health -= $damagePoint;
         }
-        return $this->health;
     }
 
-    public function ToHeal(int $healPoint, int $heathCharacter) {
-        if($heathCharacter <= 0) {
-            return $heathCharacter;
+    public function ToHeal(int $healPoint, $character) {
+        if($character->alive == false) {
+            return;
         }
 
-        if($heathCharacter == 1000) {
-            return $heathCharacter;
+        if($character->health + $healPoint >= 1000) {
+            $character->health == 1000;
+            return;
         }
 
-        $heathCharacter += $healPoint;
-        $this->health = $heathCharacter;
-        return $this->health;
+        $character->health += $healPoint;
+        
     }
     
 }
