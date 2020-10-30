@@ -31,13 +31,26 @@ class Character {
         return $this->health;
     }
 
-    public function Attack(int $damagePoint, $character) {
-        if($this !== $character) {
+    public function Attack(int $damagePoint, $character, $level) {
+
+        $differentLevel = $level - $this->GetLevel();
+
+        if($this !== $character && $differentLevel >= 5) {
+            $character->health -= ($damagePoint / 2);
+        }
+
+        if($this !== $character && $differentLevel < 5) {
             $character->health -= $damagePoint;
         }
+
     }
 
     public function ToHeal(int $healPoint, $character) {
+        
+        if($this !== $character) {
+            return;
+        }
+        
         if($character->alive == false) {
             return;
         }
@@ -48,7 +61,6 @@ class Character {
         }
 
         $character->health += $healPoint;
-        
     }
     
 }

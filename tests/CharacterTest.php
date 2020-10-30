@@ -46,7 +46,7 @@ class CharacterTest extends TestCase {
 		$heroe = new Character();
 		$enemy = new Character();
 		//Accion - When
-		$enemy->Attack(100, $heroe);
+		$enemy->Attack(100, $heroe, $heroe->GetLevel());
 		// Assert - Then
 		$result = $heroe->GetHealth();
 		$this->assertEquals(900, $result);
@@ -58,7 +58,7 @@ class CharacterTest extends TestCase {
 		$heroe = new Character();
 		$enemy = new Character();
 		// When
-		$enemy->Attack(1000, $heroe);
+		$enemy->Attack(1000, $heroe, $heroe->GetLevel());
 		// Asserts
 		$result = $heroe->IsAlive();
 		$this->assertEquals(false, $result);
@@ -72,11 +72,11 @@ class CharacterTest extends TestCase {
 		$frodo = new Character();
 		$orco = new Character();
 		// Action
-		$orco->Attack(200, $frodo);
+		$orco->Attack(200, $frodo, $frodo->GetLevel());
 		$gandalf->ToHeal(100, $frodo);
 		// Asserts
 		$result = $frodo->GetHealth();
-		$this->assertEquals(900, $result);
+		$this->assertEquals(800, $result);
 	}
 
 	public function test_dead_pj_cannot_healed()
@@ -85,7 +85,7 @@ class CharacterTest extends TestCase {
 		$gandalf = new Character();
 		$frodo = new Character();
 		// Action - When
-		$gandalf->Attack(1100, $frodo);
+		$gandalf->Attack(1100, $frodo, $frodo->GetLevel());
 		// Asserts
 		$result1 = $frodo->IsAlive();
 		$result2 = $gandalf->ToHeal(100, $frodo);
@@ -100,10 +100,11 @@ class CharacterTest extends TestCase {
 		$frodo = new Character();
 		$ogre = new Character();
 		// Action - When
-		$ogre->Attack(200, $frodo);
-		$gandalf->ToHeal(300, $frodo);
+		$ogre->Attack(200, $frodo, $frodo->GetLevel());
+		$ogre->Attack(100, $gandalf, $gandalf->GetLevel());
+		$gandalf->ToHeal(300, $gandalf);
 		// Assert
-		$result = $frodo->GetHealth(); 
+		$result = $gandalf->GetHealth(); 
 		$this->assertEquals(1000, $result);
 
 		
@@ -114,20 +115,50 @@ class CharacterTest extends TestCase {
 		// Given
 		$ryu = new Character();
 		// Action
-		$ryu->Attack(100, $ryu);
+		$ryu->Attack(100, $ryu, $ryu->GetLevel());
 		// Assert
 		$result =  $ryu->GetHealth();
 		$this->assertEquals(1000, $result);
 	}
 
-	// public function test_can_only_heal_itself() 
-	// {
-	// 	// Given - Stage
-	// 	// $gandalf = new Character();
-	// 	// $gandalfHealth = $gandalf->GetHealth();
-	// }
+	public function test_can_only_heal_itself() 
+	{
+		$gandalf = new Character();
+		$frodo = new Character();
+		$ogre = new Character();
 
+		$ogre->Attack(100, $frodo, $frodo->GetLevel());
+		$ogre->Attack(100, $gandalf, $gandalf->GetLevel());
+		$gandalf->ToHeal(100, $frodo);
+		$gandalf->ToHeal(100, $gandalf);
+
+		$resultOther = $frodo->GetHealth();
+		$resultItself = $gandalf->GetHealth();
+		$this->assertEquals(900, $resultOther);
+		$this->assertEquals(1000, $resultItself);
+	}
+
+	public function test_5_or_more_levels_above_damage_reduced()
+	{
+        $aragorn = new Character();
+        $ogre = new Character();
+
+        $ogre->Attack(100, $aragorn, 6);
+
+        $result = $aragorn->GetHealth();
+        $this->assertEquals(950, $result);
+    }
 	
+	public function test_5_or_more_levels_below_damage_reduced()
+	{
+		$aragorn = new Character();
+		$ogre = new Character();
+
+		$ogre->Attack(100, $aragorn, 4);
+
+		$result = $aragorn->GetHealth();
+		$this->assertEquals(900, $result);
+	}
 }
 
 
