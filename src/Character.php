@@ -33,14 +33,10 @@ class Character {
 
     public function Attack(int $damagePoint, $character, $level) {
 
-        $differentLevel = $level - $this->GetLevel();
+        $percentDamage = $this->CompareLevel($level);
 
-        if($this !== $character && $differentLevel >= 5) {
-            $character->health -= ($damagePoint / 2);
-        }
-
-        if($this !== $character && $differentLevel < 5) {
-            $character->health -= $damagePoint;
+        if($this !== $character) {
+            $character->health -= $damagePoint * $percentDamage;
         }
 
     }
@@ -61,6 +57,22 @@ class Character {
         }
 
         $character->health += $healPoint;
+    }
+
+    public function CompareLevel($levelCharacter) 
+    {
+        $difference = $levelCharacter - $this->level;
+        $difference = abs($difference);
+        
+        if($levelCharacter > $this->level && $difference >= 5) {
+            return 0.50;
+        }
+
+        if($levelCharacter < $this->level && $difference >= 5) {
+            return 1.50;
+        }
+
+        return 1;
     }
     
 }

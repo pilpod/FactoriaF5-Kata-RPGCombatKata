@@ -143,21 +143,22 @@ class CharacterTest extends TestCase {
         $aragorn = new Character();
         $ogre = new Character();
 
+
         $ogre->Attack(100, $aragorn, 6);
 
         $result = $aragorn->GetHealth();
         $this->assertEquals(950, $result);
     }
 	
-	public function test_5_or_more_levels_below_damage_reduced()
+	public function test_5_or_more_levels_below_damage_increased()
 	{
 		$aragorn = new Character();
 		$ogre = new Character();
 
-		$ogre->Attack(100, $aragorn, 4);
+		$ogre->Attack(100, $aragorn, -6);
 
 		$result = $aragorn->GetHealth();
-		$this->assertEquals(900, $result);
+		$this->assertEquals(850, $result);
 	}
 }
 
