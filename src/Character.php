@@ -7,12 +7,17 @@ class Character {
     private $health;
     private $level;
     private $alive;
+    private $MaxRange;
+    private $meleeFighter;
+    private $rangedFighter;
+    private $maxAttackMeter;
 
     function __construct()
     {
         $this->health = 1000;
         $this->level = 1;
         $this->alive = true;
+        $this->MaxRange = 100;
     }
 
     public function GetHealth() : int {
@@ -31,9 +36,45 @@ class Character {
         return $this->health;
     }
 
-    public function Attack(int $damagePoint, $character, $level) {
+    public function CharacterType(string $type) : bool
+    {
+        if($type == 'melee') {
+            $this->rangedFighter = false;
+            return $this->meleeFighter = true;
+        }
 
-        $percentDamage = $this->CompareLevel($level);
+        if($type == 'ranged') {
+            $this->meleeFighter = false;
+            return $this->rangedFighter = true;
+        }
+    }
+
+    public function GetMaxAttackMeters()
+    {
+        if($this->meleeFighter == true) {
+            $this->maxAttackMeter = 2;
+            return $this->maxAttackMeter;
+        }
+
+        if($this->rangedFighter == true) {
+            $this->maxAttackMeter = 20;
+            return $this->maxAttackMeter;
+        }
+
+        return $this->maxAttackMeter = 0;
+    }
+
+    public function GetAttackMaxRange(int $damagePoint)
+    {
+        $this->MaxRange = $damagePoint;
+        return $this->MaxRange;
+    }
+
+    public function Attack(int $damagePoint, $character, $targertLevel) {
+
+        $damagePoint = $this->MaxRange;
+
+        $percentDamage = $this->CompareLevel($targertLevel);
 
         if($this !== $character) {
             $character->health -= $damagePoint * $percentDamage;

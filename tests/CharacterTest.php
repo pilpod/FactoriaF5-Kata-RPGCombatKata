@@ -57,8 +57,9 @@ class CharacterTest extends TestCase {
 		// Given
 		$heroe = new Character();
 		$enemy = new Character();
+		$AttackMaxRange = $enemy->GetAttackMaxRange(1000);
 		// When
-		$enemy->Attack(1000, $heroe, $heroe->GetLevel());
+		$enemy->Attack($AttackMaxRange, $heroe, $heroe->GetLevel());
 		// Asserts
 		$result = $heroe->IsAlive();
 		$this->assertEquals(false, $result);
@@ -71,12 +72,13 @@ class CharacterTest extends TestCase {
 		$gandalf = new Character();
 		$frodo = new Character();
 		$orco = new Character();
+		$AttackMaxRange = $orco->GetAttackMaxRange(100);
 		// Action
-		$orco->Attack(200, $frodo, $frodo->GetLevel());
+		$orco->Attack(100, $frodo, $frodo->GetLevel());
 		$gandalf->ToHeal(100, $frodo);
 		// Asserts
 		$result = $frodo->GetHealth();
-		$this->assertEquals(800, $result);
+		$this->assertEquals(900, $result);
 	}
 
 	public function test_dead_pj_cannot_healed()
@@ -84,8 +86,9 @@ class CharacterTest extends TestCase {
 		// Given
 		$gandalf = new Character();
 		$frodo = new Character();
+		$AttackMaxRange = $gandalf->GetAttackMaxRange(1100);
 		// Action - When
-		$gandalf->Attack(1100, $frodo, $frodo->GetLevel());
+		$gandalf->Attack($AttackMaxRange, $frodo, $frodo->GetLevel());
 		// Asserts
 		$result1 = $frodo->IsAlive();
 		$result2 = $gandalf->ToHeal(100, $frodo);
@@ -143,7 +146,6 @@ class CharacterTest extends TestCase {
         $aragorn = new Character();
         $ogre = new Character();
 
-
         $ogre->Attack(100, $aragorn, 6);
 
         $result = $aragorn->GetHealth();
@@ -160,6 +162,34 @@ class CharacterTest extends TestCase {
 		$result = $aragorn->GetHealth();
 		$this->assertEquals(850, $result);
 	}
+
+	public function test_characters_have_attack_max_range()
+	{
+		$aragorn = new Character();
+
+		$result = $aragorn->GetAttackMaxRange(100);
+		$this->assertEquals(100, $result);
+	}
+
+	public function test_melee_fighters_have_attack_range_2_meters()
+	{
+		$aragorn = new Character();
+		$aragorn->CharacterType('melee');
+		
+		$result = $aragorn->GetMaxAttackMeters();
+		$this->assertEquals(2, $result);
+	}
+
+	public function test_ranged_fighters_have_attack_range_20_meters()
+	{
+		$legolas = new Character();
+		$legolas->CharacterType('ranged');
+
+		$result = $legolas->GetMaxAttackMeters();
+		$this->assertEquals(20, $result);
+
+	}
+	
 }
 
 
