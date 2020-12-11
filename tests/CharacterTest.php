@@ -57,9 +57,8 @@ class CharacterTest extends TestCase {
 		// Given
 		$heroe = new Character();
 		$enemy = new Character();
-		$AttackMaxRange = $enemy->GetAttackMaxRange(1000);
 		// When
-		$enemy->Attack($AttackMaxRange, $heroe, $heroe->GetLevel());
+		$enemy->Attack(1000, $heroe, $heroe->GetLevel());
 		// Asserts
 		$result = $heroe->IsAlive();
 		$this->assertEquals(false, $result);
@@ -72,7 +71,7 @@ class CharacterTest extends TestCase {
 		$gandalf = new Character();
 		$frodo = new Character();
 		$orco = new Character();
-		$AttackMaxRange = $orco->GetAttackMaxRange(100);
+		$AttackMaxRange = $orco->GetAttackAttackMaxRange(100);
 		// Action
 		$orco->Attack(100, $frodo, $frodo->GetLevel());
 		$gandalf->ToHeal(100, $frodo);
@@ -86,9 +85,8 @@ class CharacterTest extends TestCase {
 		// Given
 		$gandalf = new Character();
 		$frodo = new Character();
-		$AttackMaxRange = $gandalf->GetAttackMaxRange(1100);
 		// Action - When
-		$gandalf->Attack($AttackMaxRange, $frodo, $frodo->GetLevel());
+		$gandalf->Attack(1000, $frodo, $frodo->GetLevel());
 		// Asserts
 		$result1 = $frodo->IsAlive();
 		$result2 = $gandalf->ToHeal(100, $frodo);
@@ -167,7 +165,7 @@ class CharacterTest extends TestCase {
 	{
 		$aragorn = new Character();
 
-		$result = $aragorn->GetAttackMaxRange(100);
+		$result = $aragorn->GetAttackAttackMaxRange();
 		$this->assertEquals(100, $result);
 	}
 
@@ -176,7 +174,7 @@ class CharacterTest extends TestCase {
 		$aragorn = new Character();
 		$aragorn->CharacterType('melee');
 		
-		$result = $aragorn->GetMaxAttackMeters();
+		$result = $aragorn->GetAttackAttackMaxRange();
 		$this->assertEquals(2, $result);
 	}
 
@@ -185,11 +183,22 @@ class CharacterTest extends TestCase {
 		$legolas = new Character();
 		$legolas->CharacterType('ranged');
 
-		$result = $legolas->GetMaxAttackMeters();
+		$result = $legolas->GetAttackAttackMaxRange();
 		$this->assertEquals(20, $result);
-
 	}
 	
+	public function test_meleeFighter_in_range_to_deal_damage()
+	{
+		$aragorn = new Character();
+		$aragorn->CharacterType('melee');
+		$aragorn->GetAttackAttackMaxRange();
+		$ogre = new Character();
+
+		$aragorn->Attack(100, $ogre, 1);
+
+
+
+	}
 }
 
 
