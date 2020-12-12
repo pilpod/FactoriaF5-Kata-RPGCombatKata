@@ -10,7 +10,8 @@ class Character {
     private $AttackMaxRange;
     private $meleeFighter;
     private $rangedFighter;
-    private $maxAttackMeter;
+    private $distance;
+    private $metersToEnemy;
 
     function __construct()
     {
@@ -18,6 +19,7 @@ class Character {
         $this->level = 1;
         $this->alive = true;
         $this->AttackMaxRange = 100;
+        $this->metersToEnemy = 0;
     }
 
     public function GetHealth() : int {
@@ -36,6 +38,26 @@ class Character {
         return $this->health;
     }
 
+    public function SetDistance($characterMeters)
+    {
+        $this->distance = $characterMeters;
+    }
+
+    public function GetDistance()
+    {
+        return $this->distance;
+    }
+
+    public function DistanceWithEnemy($enemyMeters)
+    {
+        $this->metersToEnemy = $enemyMeters - $this->distance;
+    }
+
+    public function GetMetersToEnemy()
+    {
+        return $this->metersToEnemy;
+    }
+
     public function CharacterType(string $type) : bool
     {
         if($type == 'melee') {
@@ -49,7 +71,7 @@ class Character {
         }
     }
 
-    public function GetAttackAttackMaxRange()
+    public function GetAttackMaxRange()
     {
         if($this->meleeFighter == true) {
             $this->AttackMaxRange = 2;
@@ -61,17 +83,35 @@ class Character {
             return $this->AttackMaxRange;
         }
 
-        return $this->AttackMaxRange;
+        if($this->meleeFighter == false && $this->rangedFighter == false) {
+            return $this->AttackMaxRange;
+        }
     }
 
     public function Attack(int $damagePoint, $character, $targertLevel) {
 
         $percentDamage = $this->CompareLevel($targertLevel);
+        $metersToEnemy = $this->GetMetersToEnemy();
 
+        if($this->meleeFighter == true && $metersToEnemy <= 2) {
+            $this->ExtractHealth($character, $damagePoint, $percentDamage);
+        }
+
+        if($this->rangedFighter == true && $metersToEnemy <= 20) {
+            $this->ExtractHealth($character, $damagePoint, $percentDamage);
+        }
+
+        if($this->meleeFighter == false && $this->rangedFighter == false) {
+            $this->ExtractHealth($character, $damagePoint, $percentDamage);
+        }
+
+    }
+
+    public function ExtractHealth($character, $damagePoint, $percentDamage)
+    {
         if($this !== $character) {
             $character->health -= $damagePoint * $percentDamage;
         }
-
     }
 
     public function ToHeal(int $healPoint, $character) {

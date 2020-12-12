@@ -71,7 +71,7 @@ class CharacterTest extends TestCase {
 		$gandalf = new Character();
 		$frodo = new Character();
 		$orco = new Character();
-		$AttackMaxRange = $orco->GetAttackAttackMaxRange(100);
+		$AttackMaxRange = $orco->GetAttackMaxRange(100);
 		// Action
 		$orco->Attack(100, $frodo, $frodo->GetLevel());
 		$gandalf->ToHeal(100, $frodo);
@@ -165,7 +165,7 @@ class CharacterTest extends TestCase {
 	{
 		$aragorn = new Character();
 
-		$result = $aragorn->GetAttackAttackMaxRange();
+		$result = $aragorn->GetAttackMaxRange();
 		$this->assertEquals(100, $result);
 	}
 
@@ -174,7 +174,7 @@ class CharacterTest extends TestCase {
 		$aragorn = new Character();
 		$aragorn->CharacterType('melee');
 		
-		$result = $aragorn->GetAttackAttackMaxRange();
+		$result = $aragorn->GetAttackMaxRange();
 		$this->assertEquals(2, $result);
 	}
 
@@ -183,20 +183,39 @@ class CharacterTest extends TestCase {
 		$legolas = new Character();
 		$legolas->CharacterType('ranged');
 
-		$result = $legolas->GetAttackAttackMaxRange();
+		$result = $legolas->GetAttackMaxRange();
 		$this->assertEquals(20, $result);
 	}
 	
 	public function test_meleeFighter_in_range_to_deal_damage()
 	{
 		$aragorn = new Character();
-		$aragorn->CharacterType('melee');
-		$aragorn->GetAttackAttackMaxRange();
 		$ogre = new Character();
+		$aragorn->CharacterType('melee');
+		$ogre->SetDistance(10);
+		$ogreDistance = $ogre->GetDistance();
+		$aragorn->DistanceWithEnemy($ogreDistance);
 
 		$aragorn->Attack(100, $ogre, 1);
 
+		$result = $ogre->GetHealth();		
+		$this->assertEquals(1000, $result);
 
+	}
+
+	public function test_rangedFighter_in_range_to_deal_damage()
+	{
+		$legolas = new Character();
+		$ogre = new Character();
+		$legolas->CharacterType('ranged');
+		$ogre->SetDistance(1000);
+		$ogreDistance = $ogre->GetDistance();
+		$legolas->DistanceWithEnemy($ogreDistance);
+
+		$legolas->Attack(100, $ogre, 1);
+
+		$result = $ogre->GetHealth();		
+		$this->assertEquals(1000, $result);
 
 	}
 }
