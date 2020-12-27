@@ -237,7 +237,15 @@ class CharacterTest extends TestCase {
 
 	public function test_character_can_join_or_leave_factions()
 	{
-		
+		$deadpool = new Character();
+		$marvel = new Faction('marvel');
+
+		$deadpool->SignUpTo($marvel);
+		$deadpool->LeaveTo($marvel);
+
+		$result = $deadpool->GetFactions();
+
+		$this->assertEmpty($result);
 	}
 }
 

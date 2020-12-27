@@ -160,6 +160,13 @@ class Character {
     {
         array_push($this->factions, $faction->GetName());
     }
+
+    public function LeaveTo(Faction $faction)
+    {
+        $deleteOne = 1;
+        $factionPos = array_search($faction->GetName(), $this->factions);
+        unset($this->factions[$factionPos]);
+    }
     
 }
 
