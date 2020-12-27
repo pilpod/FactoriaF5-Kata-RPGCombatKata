@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Faction;
+
 class Character {
 
     private $health;
@@ -12,6 +14,7 @@ class Character {
     private $rangedFighter;
     private $distance;
     private $metersToEnemy;
+    private $factions = [];
 
     function __construct()
     {
@@ -28,6 +31,11 @@ class Character {
 
     public function GetLevel() : int {
         return $this->level;
+    }
+
+    public function GetFactions()
+    {
+        return $this->factions;
     }
 
     public function IsAlive() : bool {
@@ -146,6 +154,11 @@ class Character {
         }
 
         return 1;
+    }
+
+    public function SignUpTo(Faction $faction)
+    {
+        array_push($this->factions, $faction->GetName());
     }
     
 }

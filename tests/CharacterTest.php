@@ -4,6 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use App\Character;
+use App\Faction;
 
 class CharacterTest extends TestCase {
 
@@ -217,6 +218,26 @@ class CharacterTest extends TestCase {
 		$result = $ogre->GetHealth();		
 		$this->assertEquals(1000, $result);
 
+	}
+
+	public function test_character_belong_to_one_or_more_factions()
+	{
+		$superman = new Character();
+		$dc = new Faction('dc');
+		$marvel = new Faction('marvel');
+
+		$superman->SignUpTo($dc);
+		$superman->SignUpTo($marvel);
+
+		$result = $superman->GetFactions();
+
+		$this->assertContains('dc', $result);
+		$this->assertContains('marvel', $result);
+	}
+
+	public function test_character_can_join_or_leave_factions()
+	{
+		
 	}
 }
 
